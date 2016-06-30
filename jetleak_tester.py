@@ -1,5 +1,6 @@
 import httplib, urllib, ssl, string, sys, getopt
 from urlparse import urlparse
+import ssl
 
 '''
 
@@ -25,7 +26,8 @@ port = sys.argv[2]
 conn = None
 
 if url.scheme == "https":
-	conn = httplib.HTTPSConnection(url.netloc + ":" + port)
+	sslcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1) # new SSL context to force no verification of cert
+	conn = httplib.HTTPSConnection(url.netloc + ":" + port, context=sslcontext)
 elif url.scheme == "http":
     conn = httplib.HTTPConnection(url.netloc + ":" + port)
 else: 
